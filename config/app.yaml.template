@@ -1,0 +1,58 @@
+# Polarization Interface Application Configuration Template
+# Copy this file to app.yaml and modify with your actual values
+
+# ZMQ Server Configuration
+zmq_server:
+  host: "your-zmq-server-hostname"  # Replace with actual ZMQ server hostname
+  port: 5100
+  timeout: 120  # seconds
+  connection_retry:
+    max_retries: -1  # -1 means retry indefinitely
+    initial_delay: 1.0  # initial delay in seconds
+    max_delay: 15.0  # maximum delay in seconds
+    exponential_base: 2.0  # exponential backoff multiplier
+    jitter: 0.1  # random jitter factor (0-1)
+
+# Web Application Configuration
+web_app:
+  frontend_port: 8085
+  backend_port: 8000
+  backend_host: "localhost"
+
+# CORS Configuration
+cors:
+  allowed_origins:
+    - "http://localhost:8085"
+    - "http://127.0.0.1:8085"
+  allowed_methods:
+    - "GET"
+    - "POST"
+    - "PUT"
+    - "DELETE"
+    - "OPTIONS"
+  allowed_headers:
+    - "*"
+
+# Redis Configuration
+redis:
+  host: "your-redis-hostname"  # Replace with actual Redis hostname
+  port: 6379
+  db: 0
+  timeout: 5.0
+  retry_on_timeout: true
+  socket_keepalive: true
+  socket_keepalive_options: {}
+
+# Logging Configuration
+logging:
+  level: "INFO"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  file_rotation:
+    max_bytes: 10485760  # 10MB
+    backup_count: 5
+  
+# Development Configuration
+development:
+  debug: false
+  auto_reload: false
+  log_requests: true

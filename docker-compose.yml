@@ -1,0 +1,41 @@
+version: '3.8'
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    container_name: polarization_backend
+    ports:
+      - "8000:8000"  # Backend API port
+      - "8085:8085"  # Frontend port (mapped here since frontend shares network)
+    volumes:
+      - ./src/backend:/app/
+      - ./config:/app/config/
+      - ./logs:/app/logs/
+    environment:
+      - PYTHONPATH=/app
+      - PYTHONUNBUFFERED=1
+    working_dir: /app
+    restart: unless-stopped
+    entrypoint:
+      - python3
+      - -u
+      - main.py
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    container_name: polarization_frontend
+    network_mode: "service:backend"  # Share backend's network stack
+    volumes:
+      - ./src/frontend:/app/
+      - /app/node_modules  # Anonymous volume for node_modules
+    environment:
+      - PORT=8085
+      - REACT_APP_BACKEND_URL=http://localhost:8000  # Same network stack = localhost works
+    working_dir: /app
+    restart: unless-stopped
+    command: sh -c "npm install && npm start"
+    depends_on:
+      - backend

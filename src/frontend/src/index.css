@@ -1,0 +1,300 @@
+/* FlatUI Color Scheme from https://flatuicolors.com/palette/defo */
+:root {
+  --flat-turquoise: #1abc9c;
+  --flat-emerald: #2ecc71;
+  --flat-peter-river: #3498db;
+  --flat-amethyst: #9b59b6;
+  --flat-wet-asphalt: #34495e;
+  --flat-green-sea: #16a085;
+  --flat-nephritis: #27ae60;
+  --flat-belize-hole: #2980b9;
+  --flat-wisteria: #8e44ad;
+  --flat-midnight-blue: #2c3e50;
+  --flat-sun-flower: #f1c40f;
+  --flat-carrot: #e67e22;
+  --flat-alizarin: #e74c3c;
+  --flat-clouds: #ecf0f1;
+  --flat-concrete: #95a5a6;
+  --flat-orange: #f39c12;
+  --flat-pumpkin: #d35400;
+  --flat-pomegranate: #c0392b;
+  --flat-silver: #bdc3c7;
+  --flat-asbestos: #7f8c8d;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: var(--flat-clouds);
+  color: var(--flat-wet-asphalt);
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+/* Custom button styles */
+.btn-flat-primary {
+  background-color: var(--flat-peter-river);
+  border-color: var(--flat-belize-hole);
+  color: white;
+}
+
+.btn-flat-primary:hover {
+  background-color: var(--flat-belize-hole);
+  border-color: var(--flat-belize-hole);
+  color: white;
+}
+
+.btn-flat-success {
+  background-color: var(--flat-emerald);
+  border-color: var(--flat-nephritis);
+  color: white;
+}
+
+.btn-flat-success:hover {
+  background-color: var(--flat-nephritis);
+  border-color: var(--flat-nephritis);
+  color: white;
+}
+
+.btn-flat-warning {
+  background-color: var(--flat-sun-flower);
+  border-color: var(--flat-orange);
+  color: var(--flat-wet-asphalt);
+}
+
+.btn-flat-warning:hover {
+  background-color: var(--flat-orange);
+  border-color: var(--flat-orange);
+  color: white;
+}
+
+.btn-flat-danger {
+  background-color: var(--flat-alizarin);
+  border-color: var(--flat-pomegranate);
+  color: white;
+}
+
+.btn-flat-danger:hover {
+  background-color: var(--flat-pomegranate);
+  border-color: var(--flat-pomegranate);
+  color: white;
+}
+
+/* Card styles */
+.card-flat {
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: white;
+}
+
+.card-header-flat {
+  background-color: var(--flat-wet-asphalt);
+  color: white;
+  border-radius: 8px 8px 0 0;
+  border: none;
+}
+
+/* Form control styles */
+.form-control-flat {
+  border: 2px solid var(--flat-silver);
+  border-radius: 6px;
+  padding: 10px 15px;
+  transition: border-color 0.3s ease;
+}
+
+.form-control-flat:focus {
+  border-color: var(--flat-peter-river);
+  box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.25);
+}
+
+.form-select-flat {
+  border: 2px solid var(--flat-silver);
+  border-radius: 6px;
+  padding: 10px 15px;
+  transition: border-color 0.3s ease;
+}
+
+.form-select-flat:focus {
+  border-color: var(--flat-peter-river);
+  box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.25);
+}
+
+/* Alert styles */
+.alert-flat-success {
+  background-color: rgba(46, 204, 113, 0.1);
+  border-color: var(--flat-emerald);
+  color: var(--flat-nephritis);
+}
+
+.alert-flat-danger {
+  background-color: rgba(231, 76, 60, 0.1);
+  border-color: var(--flat-alizarin);
+  color: var(--flat-pomegranate);
+}
+
+.alert-flat-warning {
+  background-color: rgba(241, 196, 15, 0.1);
+  border-color: var(--flat-sun-flower);
+  color: var(--flat-orange);
+}
+
+/* Loading spinner */
+.spinner-flat {
+  color: var(--flat-peter-river);
+}
+
+/* Control section spacing */
+.control-section {
+  margin-bottom: 2rem;
+}
+
+.control-row {
+  display: flex;
+  align-items: end;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.control-group {
+  flex: 1;
+  min-width: 200px;
+}
+
+.set-button {
+  flex-shrink: 0;
+}
+
+/* Move Motors component styles */
+.move-motors-content {
+  padding: 0;
+}
+
+.party-section {
+  border: 1px solid var(--flat-silver);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.party-header {
+  background-color: var(--flat-concrete);
+  padding: 0.5rem 1rem;
+  border-bottom: 1px solid var(--flat-silver);
+}
+
+.party-content {
+  padding: 0;
+}
+
+.waveplate-header {
+  display: flex;
+  background-color: var(--flat-clouds);
+  border-bottom: 1px solid var(--flat-silver);
+  padding: 0.5rem;
+  font-weight: 600;
+}
+
+.waveplate-row {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem;
+  border-bottom: 1px solid rgba(149, 165, 166, 0.3);
+}
+
+.waveplate-row:last-child {
+  border-bottom: none;
+}
+
+.waveplate-row:hover {
+  background-color: rgba(236, 240, 241, 0.5);
+}
+
+.waveplate-name {
+  flex: 1;
+  min-width: 140px;
+  padding: 0 0.5rem;
+}
+
+.waveplate-position {
+  flex: 1;
+  min-width: 120px;
+  padding: 0 0.5rem;
+}
+
+.waveplate-jog {
+  flex: 1.5;
+  min-width: 180px;
+  padding: 0 0.5rem;
+}
+
+.jog-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.jog-btn {
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  border-color: var(--flat-silver);
+}
+
+.jog-btn:hover {
+  background-color: var(--flat-peter-river);
+  border-color: var(--flat-belize-hole);
+  color: white;
+}
+
+.jog-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.jog-step-input {
+  width: 60px;
+  text-align: center;
+  font-size: 0.875rem;
+  padding: 0.25rem 0.5rem;
+}
+
+.waveplate-list {
+  background-color: white;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .waveplate-header,
+  .waveplate-row {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .waveplate-name,
+  .waveplate-position,
+  .waveplate-jog {
+    min-width: 100%;
+    padding: 0;
+  }
+  
+  .jog-controls {
+    justify-content: center;
+  }
+}
+
+/* Small alert styling */
+.alert-sm {
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+}
