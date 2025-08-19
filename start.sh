@@ -134,11 +134,16 @@ if ! command -v docker-compose >/dev/null 2>&1; then
     exit 1
 fi
 
-# Set environment variable and start
+# Set environment variables and start
 export BACKEND_HOST
+
+# Set CORS origins to include the frontend URL
+export CORS_ALLOW_ORIGINS="http://$BACKEND_HOST:8085"
+
 print_info "Backend host: $BACKEND_HOST"
 print_info "Frontend will be accessible at: http://$BACKEND_HOST:8085"
 print_info "Backend API will be accessible at: http://$BACKEND_HOST:8000"
+print_info "CORS configured for: $CORS_ALLOW_ORIGINS"
 
 echo ""
 print_info "Starting containers..."

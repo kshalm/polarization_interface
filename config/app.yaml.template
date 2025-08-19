@@ -24,6 +24,7 @@ cors:
   allowed_origins:
     - "http://localhost:8085"
     - "http://127.0.0.1:8085"
+    # Dynamic origins are automatically added based on BACKEND_HOST environment variable
   allowed_methods:
     - "GET"
     - "POST"
