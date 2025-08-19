@@ -59,6 +59,17 @@ if [ ! -d "node_modules" ]; then
     npm install
 fi
 
+# Security audit check
+print_header "FRONTEND SECURITY AUDIT"
+echo "Running npm security audit..."
+npm audit --audit-level=moderate
+AUDIT_EXIT_CODE=$?
+if [ $AUDIT_EXIT_CODE -eq 0 ]; then
+    echo "✅ No moderate or high security vulnerabilities found!"
+else
+    echo "⚠️  Security vulnerabilities detected. Run 'npm audit' for details."
+fi
+
 echo "Running React Component Tests..."
 npm test -- --watchAll=false --coverage
 FRONTEND_EXIT_CODE=$?
