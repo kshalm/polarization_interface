@@ -6,7 +6,9 @@ const CountsTable = () => {
   useEffect(() => {
     const fetchCounts = async () => {
       try {
-        const response = await fetch('http://localhost:8000/redis/counts');
+        // Use same backend URL configuration as main API
+        const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8000';
+        const response = await fetch(`${backendUrl}/redis/counts`);
         const result = await response.json();
         
         // Only update table when we have success:true AND actual data

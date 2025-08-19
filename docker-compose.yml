@@ -33,7 +33,7 @@ services:
       - /app/node_modules  # Anonymous volume for node_modules
     environment:
       - PORT=8085
-      - REACT_APP_BACKEND_URL=http://localhost:8000  # Same network stack = localhost works
+      - REACT_APP_BACKEND_URL=http://${BACKEND_HOST:-localhost}:8000  # Configurable backend host
     working_dir: /app
     restart: unless-stopped
     command: sh -c "npm install && npm start"
