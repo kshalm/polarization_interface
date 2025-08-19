@@ -149,6 +149,7 @@ echo ""
 print_info "Starting containers..."
 
 # Run docker-compose
+docker-compose down
 if docker-compose up --build -d; then
     print_success "Application started successfully!"
 else
