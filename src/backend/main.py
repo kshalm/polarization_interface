@@ -27,8 +27,8 @@ except ImportError:
 # Configure structured logging
 def setup_logging():
     """Setup structured logging with rotation"""
-    # Create logs directory
-    log_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'logs')
+    # Create logs directory - use /app/logs/ to match Docker volume mount
+    log_dir = os.path.join(os.path.dirname(__file__), 'logs')
     os.makedirs(log_dir, exist_ok=True)
     
     # Configure root logger
@@ -39,11 +39,15 @@ def setup_logging():
             # Main backend log
             RotatingFileHandler(
                 os.path.join(log_dir, 'backend.log'),
-                maxBytes=10*1024*1024,  # 10MB
-                backupCount=5
+                maxBytes=20*1024*1024,  # 20MB
+                backupCount=3
                 ),
-            # Error log
-            logging.FileHandler(os.path.join(log_dir, 'errors.log'))
+            # Error log with rotation
+            RotatingFileHandler(
+                os.path.join(log_dir, 'errors.log'),
+                maxBytes=20*1024*1024,  # 20MB
+                backupCount=3
+                )
         ]
         )
     
@@ -51,7 +55,7 @@ def setup_logging():
     operations_logger = logging.getLogger('operations')
     operations_handler = RotatingFileHandler(
         os.path.join(log_dir, 'operations.log'),
-        maxBytes=5*1024*1024,  # 5MB
+        maxBytes=20*1024*1024,  # 20MB
         backupCount=3
         )
     operations_handler.setFormatter(
@@ -64,8 +68,8 @@ def setup_logging():
     redis_debug_logger = logging.getLogger('redis_debug')
     redis_debug_handler = RotatingFileHandler(
         os.path.join(log_dir, 'redis_debug.log'),
-        maxBytes=10*1024*1024,  # 10MB
-        backupCount=5
+        maxBytes=20*1024*1024,  # 20MB
+        backupCount=3
         )
     redis_debug_handler.setFormatter(
         logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
@@ -103,7 +107,6 @@ async def redis_polling_loop():
                 if result is not None:
                     latest_redis_data = result
                     latest_redis_timestamp = datetime.now()
-                    logger.debug(f"Redis polling updated data: {result}")
             
             # Poll every 200ms to match frontend expectation
             await asyncio.sleep(0.2)
@@ -768,7 +771,6 @@ async def get_redis_counts():
         if latest_redis_data is not None:
             # Check if data is recent (within last 2 seconds)
             if latest_redis_timestamp and (datetime.now() - latest_redis_timestamp).total_seconds() < 2.0:
-                logger.debug(f"Returning cached counts data: Alice={latest_redis_data['alice_singles']}, Bob={latest_redis_data['bob_singles']}, Coinc={latest_redis_data['coincidences']}")
                 return {"success": True, "data": latest_redis_data}
         
         # No recent data available 
