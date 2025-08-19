@@ -60,7 +60,6 @@ class RedisCountsClient:
         """Create a fresh Redis connection for each request"""
         try:
             self.connection_attempts += 1
-            redis_debug_logger.debug(f"Creating fresh Redis connection #{self.connection_attempts} to {config.redis_host}:{config.redis_port}")
             
             connection = redis.Redis(
                 host=config.redis_host,
@@ -74,7 +73,6 @@ class RedisCountsClient:
             
             # Test the connection immediately
             await asyncio.wait_for(connection.ping(), timeout=5.0)
-            redis_debug_logger.debug(f"Fresh Redis connection #{self.connection_attempts} established successfully")
             return connection
             
         except Exception as e:
@@ -147,7 +145,6 @@ class RedisCountsClient:
 
             # Read from the counts stream - only get messages AFTER our last timestamp
             stream = {CHANNEL_COUNTS: self.last_timestamp}
-            redis_debug_logger.debug(f"Attempting xread from stream {CHANNEL_COUNTS} after timestamp {self.last_timestamp}")
             
             # Use asyncio timeout to prevent hanging
             messages = await asyncio.wait_for(
@@ -159,10 +156,7 @@ class RedisCountsClient:
             
             # If no messages, means no NEW data is available
             if not messages:
-                redis_debug_logger.debug(f"No new messages received from Redis stream (read took {read_time:.3f}s)")
                 return None
-            
-            redis_debug_logger.debug(f"Received {len(messages)} message groups from Redis stream")
             
             decoded_messages = self.decode_stream_data(messages)
             if not decoded_messages:
@@ -170,25 +164,19 @@ class RedisCountsClient:
                 redis_debug_logger.error("Failed to decode Redis stream messages")
                 return None
             
-            redis_debug_logger.debug(f"Decoded {len(decoded_messages)} messages")
-            
             # Get the latest message and update our timestamp
             timestamp, counts_data = decoded_messages[-1]
-            redis_debug_logger.debug(f"Latest message timestamp: {timestamp}, previous timestamp: {self.last_timestamp}")
             
             # Only return data if we got a genuinely new timestamp
             if timestamp != self.last_timestamp:
-                redis_debug_logger.info(f"NEW data received! Timestamp: {timestamp} (read took {read_time:.3f}s)")
                 self.last_timestamp = timestamp
                 self.last_successful_read = datetime.now()
                 self.consecutive_failures = 0  # Reset failure counter on success
                 return counts_data
             else:
-                redis_debug_logger.debug(f"Received same timestamp as before: {timestamp}, no new data")
                 return None
             
         except asyncio.TimeoutError:
-            redis_debug_logger.debug("Redis read timeout (normal)")
             return None
         except Exception as e:
             self.failed_reads += 1
@@ -235,17 +223,12 @@ class RedisCountsClient:
     async def get_formatted_counts(self, prefix: str = 'VV') -> Optional[Dict[str, Any]]:
         """Get counts data and format it for the frontend - only trimmed data"""
         try:
-            redis_debug_logger.debug(f"Getting formatted counts for prefix '{prefix}'")
             counts_data = await self.get_counts_data()
             if not counts_data:
-                redis_debug_logger.debug("No new counts data available from Redis stream")
                 return None
-            
-            redis_debug_logger.debug(f"Received counts data with keys: {list(counts_data.keys())}")
             
             # Only return trimmed data (matching STCounts behavior)
             is_trim = counts_data.get('isTrim', 0)
-            redis_debug_logger.debug(f"Data isTrim value: {is_trim}")
             if is_trim == 0:
                 self.filtered_reads += 1
                 redis_debug_logger.warning(f"FILTERING OUT non-trimmed data (isTrim={is_trim}) - this may be why data stops!")
@@ -258,14 +241,11 @@ class RedisCountsClient:
                 return None
             
             prefix_data = counts_data[prefix]
-            redis_debug_logger.debug(f"Processing {prefix} data: {prefix_data}")
             
             # Extract Alice singles, Bob singles, and coincidences
             alice_singles = int(prefix_data.get('As', 0))
             bob_singles = int(prefix_data.get('Bs', 0))
             coincidences = int(prefix_data.get('C', 0))
-            
-            redis_debug_logger.debug(f"Raw counts - Alice: {alice_singles}, Bob: {bob_singles}, Coinc: {coincidences}")
             
             # Calculate efficiencies (exact STCounts logic)
             alice_eff = 0
@@ -290,7 +270,6 @@ class RedisCountsClient:
                 'joint_efficiency': joint_eff
             }
             
-            redis_debug_logger.info(f"Successfully formatted counts result: {result}")
             return result
             
         except Exception as e:
