@@ -77,6 +77,10 @@ def setup_logging():
     redis_debug_logger.addHandler(redis_debug_handler)
     redis_debug_logger.setLevel(logging.DEBUG)  # Enable debug level for Redis
     
+    # Suppress watchfiles spam in logs - keep reloader active but silence routine messages
+    watchfiles_logger = logging.getLogger('watchfiles.main')
+    watchfiles_logger.setLevel(logging.WARNING)  # Only show warnings/errors, not INFO
+    
     return operations_logger
 
 # Setup logging and get loggers
